@@ -1,0 +1,9 @@
+{
+	"name": "adf-football-dev",
+	"location": "northeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "d2f28cbf-007a-4a9d-baca-fc2eae05db06",
+		"tenantId": "a16f9bd0-0eda-4777-8e72-a0c890dc4161"
+	}
+}

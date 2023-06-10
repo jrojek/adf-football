@@ -1,0 +1,29 @@
+{
+	"name": "ds_raw",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "adls_football",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"fileName": {
+				"type": "string",
+				"defaultValue": "venues"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().fileName",
+					"type": "Expression"
+				},
+				"fileSystem": "raw"
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

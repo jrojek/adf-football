@@ -1,0 +1,16 @@
+{
+	"name": "SourceDataset_tyw",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "conn_api_football",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": "countries",
+			"requestMethod": "GET"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

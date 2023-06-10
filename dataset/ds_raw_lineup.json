@@ -1,0 +1,29 @@
+{
+	"name": "ds_raw_lineup",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "adls_football",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"fixture_filename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().fixture_filename",
+					"type": "Expression"
+				},
+				"folderPath": "lineup",
+				"fileSystem": "raw"
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

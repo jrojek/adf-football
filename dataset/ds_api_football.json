@@ -1,0 +1,25 @@
+{
+	"name": "ds_api_football",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "conn_api_football_v3",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"relativeUrl": {
+				"type": "string",
+				"defaultValue": "countries"
+			}
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@dataset().relativeUrl",
+				"type": "Expression"
+			},
+			"requestMethod": "GET"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

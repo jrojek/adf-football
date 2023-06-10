@@ -1,0 +1,24 @@
+{
+	"name": "conn_api_football",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"description": "Connection to API-Football",
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "https://v3.football.api-sports.io",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous",
+			"authHeaders": {
+				"x-rapidapi-host": {
+					"type": "SecureString",
+					"value": "**********"
+				},
+				"x-rapidapi-key": {
+					"type": "SecureString",
+					"value": "**********"
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,16 @@
+{
+	"name": "ds_api_rounds",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "conn_api_football_v3",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": "fixtures/rounds?season=2022&league=140",
+			"requestMethod": "GET"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

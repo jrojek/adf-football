@@ -1,0 +1,16 @@
+{
+	"name": "ds_api_leagues",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "conn_api_football_v3",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": "leagues",
+			"requestMethod": "GET"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

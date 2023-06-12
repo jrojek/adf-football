@@ -572,7 +572,7 @@
 						"type": "Copy",
 						"dependsOn": [
 							{
-								"activity": "Set variable1",
+								"activity": "Set Variable page_number",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -642,13 +642,10 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataset": {
-								"referenceName": "ds_raw",
+								"referenceName": "ds_raw_players",
 								"type": "DatasetReference",
 								"parameters": {
-									"fileName": {
-										"value": "@variables('page_number')",
-										"type": "Expression"
-									}
+									"page_number": "*.*"
 								}
 							},
 							"enableLogging": false,
@@ -660,7 +657,7 @@
 						}
 					},
 					{
-						"name": "Set variable1",
+						"name": "Set Variable page_number",
 						"type": "SetVariable",
 						"dependsOn": [
 							{
@@ -673,7 +670,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"variableName": "page_number",
-							"value": "3"
+							"value": "1"
 						}
 					}
 				],
@@ -692,8 +689,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_api_football')]",
-				"[concat(variables('factoryId'), '/datasets/ds_raw_players')]",
-				"[concat(variables('factoryId'), '/datasets/ds_raw')]"
+				"[concat(variables('factoryId'), '/datasets/ds_raw_players')]"
 			]
 		},
 		{

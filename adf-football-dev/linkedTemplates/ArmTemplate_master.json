@@ -1,0 +1,90 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-football-dev"
+		},
+		"adls_football_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'adls_football'"
+		},
+		"adls_football_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://footstatsblob.dfs.core.windows.net/"
+		},
+		"conn_api_football_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://v3.football.api-sports.io"
+		},
+		"conn_api_football_v3_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://api-football-v1.p.rapidapi.com/v3"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "adf-football-dev_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"adls_football_accountKey": {
+						"value": "[parameters('adls_football_accountKey')]"
+					},
+					"adls_football_properties_typeProperties_url": {
+						"value": "[parameters('adls_football_properties_typeProperties_url')]"
+					},
+					"conn_api_football_properties_typeProperties_url": {
+						"value": "[parameters('conn_api_football_properties_typeProperties_url')]"
+					},
+					"conn_api_football_v3_properties_typeProperties_url": {
+						"value": "[parameters('conn_api_football_v3_properties_typeProperties_url')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "adf-football-dev_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf-football-dev_ArmTemplate_0')]"
+			]
+		}
+	]
+}

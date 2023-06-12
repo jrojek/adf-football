@@ -1,0 +1,21 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-football-dev"
+		},
+		"adls_football_accountKey": {
+			"value": ""
+		},
+		"adls_football_properties_typeProperties_url": {
+			"value": "https://footstatsblob.dfs.core.windows.net/"
+		},
+		"conn_api_football_properties_typeProperties_url": {
+			"value": "https://v3.football.api-sports.io"
+		},
+		"conn_api_football_v3_properties_typeProperties_url": {
+			"value": "https://api-football-v1.p.rapidapi.com/v3"
+		}
+	}
+}

@@ -1,0 +1,29 @@
+{
+	"name": "ds_raw_players",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "adls_football",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"page_number": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().page_number",
+					"type": "Expression"
+				},
+				"folderPath": "players",
+				"fileSystem": "raw"
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

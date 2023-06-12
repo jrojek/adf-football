@@ -103,108 +103,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Copy Fixture Stats')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy FCB fixtures",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "RestSource",
-								"httpRequestTimeout": "00:01:40",
-								"requestInterval": "00.00:00:00.010"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "ds_api_football",
-								"type": "DatasetReference",
-								"parameters": {
-									"relativeUrl": "fixtures?season=2022&league=140&team=529"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ds_raw",
-								"type": "DatasetReference",
-								"parameters": {
-									"fileName": "fixtures"
-								}
-							}
-						]
-					},
-					{
-						"name": "ForEach Fixture",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Copy FCB fixtures",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Copy FCB fixtures').output.response[0].fixture",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "Wait1",
-									"type": "Wait",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"waitTimeInSeconds": 1
-									}
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"variables": {
-					"fixture_id": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"lastPublishTime": "2023-06-05T15:46:21Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_api_football')]",
-				"[concat(variables('factoryId'), '/datasets/ds_raw')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/Copy Leagues')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -299,6 +197,125 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_api_leagues')]",
 				"[concat(variables('factoryId'), '/datasets/ds_raw_leagues')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Copy Players All Pages')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "copy FCB (team=529) players for season 2022",
+				"activities": [
+					{
+						"name": "Copy Players",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Delete Player Files",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010"
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_api_football",
+								"type": "DatasetReference",
+								"parameters": {
+									"relativeUrl": {
+										"value": "@concat('players?team=529&season=2022&page=', variables('page_number'))",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_raw_players",
+								"type": "DatasetReference",
+								"parameters": {
+									"page_number": {
+										"value": "@variables('page_number')",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "Delete Player Files",
+						"type": "Delete",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "ds_raw",
+								"type": "DatasetReference",
+								"parameters": {
+									"fileName": {
+										"value": "@variables('page_number')",
+										"type": "Expression"
+									}
+								}
+							},
+							"enableLogging": false,
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"page_number": {
+						"type": "String",
+						"defaultValue": "2"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-06-05T15:46:20Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_api_football')]",
+				"[concat(variables('factoryId'), '/datasets/ds_raw_players')]",
+				"[concat(variables('factoryId'), '/datasets/ds_raw')]"
 			]
 		},
 		{
@@ -1153,6 +1170,39 @@
 							"type": "Expression"
 						},
 						"folderPath": "lineup",
+						"fileSystem": "raw"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/adls_football')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_raw_players')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "adls_football",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"page_number": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().page_number",
+							"type": "Expression"
+						},
+						"folderPath": "players",
 						"fileSystem": "raw"
 					}
 				},

@@ -81,7 +81,10 @@
 						"referenceName": "ds_raw_players",
 						"type": "DatasetReference",
 						"parameters": {
-							"page_number": "*.*"
+							"page_number": {
+								"value": "@variables('page_number')",
+								"type": "Expression"
+							}
 						}
 					},
 					"enableLogging": false,
@@ -108,12 +111,78 @@
 					"variableName": "page_number",
 					"value": "1"
 				}
+			},
+			{
+				"name": "Lookup Current File",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Copy Players",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "ds_raw_players",
+						"type": "DatasetReference",
+						"parameters": {
+							"page_number": {
+								"value": "@variables('page_number')",
+								"type": "Expression"
+							}
+						}
+					}
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup Current File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "total_page_number",
+					"value": {
+						"value": "@string(activity('Lookup Current File').output.firstRow.paging.total)",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"variables": {
 			"page_number": {
 				"type": "String",
 				"defaultValue": "3"
+			},
+			"total_page_number": {
+				"type": "String"
 			}
 		},
 		"annotations": [],

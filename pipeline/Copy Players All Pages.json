@@ -8,7 +8,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Delete Player Files",
+						"activity": "Set variable1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -94,12 +94,29 @@
 						"enablePartitionDiscovery": false
 					}
 				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Delete Player Files",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "page_number",
+					"value": "3"
+				}
 			}
 		],
 		"variables": {
 			"page_number": {
 				"type": "String",
-				"defaultValue": "2"
+				"defaultValue": "3"
 			}
 		},
 		"annotations": [],

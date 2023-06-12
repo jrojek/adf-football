@@ -1,0 +1,59 @@
+{
+	"name": "Copy Players",
+	"properties": {
+		"description": "copy FCB (team=529) players for season 2022",
+		"activities": [
+			{
+				"name": "Copy Players",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_api_football",
+						"type": "DatasetReference",
+						"parameters": {
+							"relativeUrl": "players?team=529&season=2022"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_raw",
+						"type": "DatasetReference",
+						"parameters": {
+							"fileName": "players"
+						}
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2023-06-05T15:46:20Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

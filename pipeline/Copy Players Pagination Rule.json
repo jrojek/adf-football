@@ -51,7 +51,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"page_number": {
-								"value": "@variables('page_number')",
+								"value": "players",
 								"type": "Expression"
 							}
 						}

@@ -204,7 +204,7 @@
 					"relativeUrl": "players?team=529&season=2022&page={pagenum}",
 					"requestMethod": "GET",
 					"paginationRules": {
-						"QueryParameters.{pagenum}": "RANGE:1:4:1"
+						"QueryParameters.{pagenum}": "RANGE:1:3:1"
 					}
 				}
 			},

@@ -836,13 +836,10 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "ds_raw_players",
+								"referenceName": "ds_raw",
 								"type": "DatasetReference",
 								"parameters": {
-									"page_number": {
-										"value": "players",
-										"type": "Expression"
-									}
+									"fileName": "players"
 								}
 							}
 						]
@@ -861,13 +858,10 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataset": {
-								"referenceName": "ds_raw_players",
+								"referenceName": "ds_raw",
 								"type": "DatasetReference",
 								"parameters": {
-									"page_number": {
-										"value": "@variables('page_number')",
-										"type": "Expression"
-									}
+									"fileName": "players"
 								}
 							},
 							"enableLogging": false,
@@ -897,7 +891,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_api_players_paginated')]",
-				"[concat(variables('factoryId'), '/datasets/ds_raw_players')]"
+				"[concat(variables('factoryId'), '/datasets/ds_raw')]"
 			]
 		},
 		{

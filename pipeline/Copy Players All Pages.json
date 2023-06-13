@@ -156,7 +156,7 @@
 				}
 			},
 			{
-				"name": "Set variable1",
+				"name": "Set Var TotalPages",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -179,7 +179,7 @@
 		"variables": {
 			"page_number": {
 				"type": "String",
-				"defaultValue": "3"
+				"defaultValue": "1"
 			},
 			"total_page_number": {
 				"type": "String"

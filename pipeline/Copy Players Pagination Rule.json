@@ -41,11 +41,8 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_api_football",
-						"type": "DatasetReference",
-						"parameters": {
-							"relativeUrl": "players?team=529&season=2022"
-						}
+						"referenceName": "ds_api_players_paginated",
+						"type": "DatasetReference"
 					}
 				],
 				"outputs": [

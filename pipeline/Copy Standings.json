@@ -1,0 +1,94 @@
+{
+	"name": "Copy Standings",
+	"properties": {
+		"description": "copy leagues info from API-Football and load to a blob as json",
+		"activities": [
+			{
+				"name": "Copy Standings",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Delete Standings",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_api_football",
+						"type": "DatasetReference",
+						"parameters": {
+							"relativeUrl": "standings?league=140&season=2022"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_raw",
+						"type": "DatasetReference",
+						"parameters": {
+							"fileName": "standings"
+						}
+					}
+				]
+			},
+			{
+				"name": "Delete Standings",
+				"type": "Delete",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_raw",
+						"type": "DatasetReference",
+						"parameters": {
+							"fileName": "standings"
+						}
+					},
+					"enableLogging": false,
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					}
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2023-06-05T07:20:29Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

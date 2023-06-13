@@ -47,13 +47,10 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_raw_players",
+						"referenceName": "ds_raw",
 						"type": "DatasetReference",
 						"parameters": {
-							"page_number": {
-								"value": "players",
-								"type": "Expression"
-							}
+							"fileName": "players"
 						}
 					}
 				]
@@ -72,13 +69,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "ds_raw_players",
+						"referenceName": "ds_raw",
 						"type": "DatasetReference",
 						"parameters": {
-							"page_number": {
-								"value": "@variables('page_number')",
-								"type": "Expression"
-							}
+							"fileName": "players"
 						}
 					},
 					"enableLogging": false,

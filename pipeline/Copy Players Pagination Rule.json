@@ -1,0 +1,109 @@
+{
+	"name": "Copy Players Pagination Rule",
+	"properties": {
+		"description": "copy FCB (team=529) players for season 2022",
+		"activities": [
+			{
+				"name": "Copy Players",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Delete Player Files",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_api_football",
+						"type": "DatasetReference",
+						"parameters": {
+							"relativeUrl": "players?team=529&season=2022"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_raw_players",
+						"type": "DatasetReference",
+						"parameters": {
+							"page_number": {
+								"value": "@variables('page_number')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "Delete Player Files",
+				"type": "Delete",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_raw_players",
+						"type": "DatasetReference",
+						"parameters": {
+							"page_number": {
+								"value": "@variables('page_number')",
+								"type": "Expression"
+							}
+						}
+					},
+					"enableLogging": false,
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					}
+				}
+			}
+		],
+		"variables": {
+			"page_number": {
+				"type": "String",
+				"defaultValue": "1"
+			},
+			"total_page_number": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-06-05T15:46:20Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

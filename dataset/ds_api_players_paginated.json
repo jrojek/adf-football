@@ -5,12 +5,6 @@
 			"referenceName": "conn_api_football_v3",
 			"type": "LinkedServiceReference"
 		},
-		"parameters": {
-			"relativeUrl": {
-				"type": "string",
-				"defaultValue": "countries"
-			}
-		},
 		"annotations": [],
 		"type": "RestResource",
 		"typeProperties": {

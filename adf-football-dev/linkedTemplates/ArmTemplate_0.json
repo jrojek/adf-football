@@ -266,6 +266,39 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_raw_events')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "adls_football",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"fixture_filename": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().fixture_filename",
+							"type": "Expression"
+						},
+						"folderPath": "events",
+						"fileSystem": "raw"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/adls_football')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_raw_fixture')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -891,74 +924,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_api_players_paginated')]",
-				"[concat(variables('factoryId'), '/datasets/ds_raw')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Copy Players')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "copy FCB (team=529) players for season 2022",
-				"activities": [
-					{
-						"name": "Copy Players",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "RestSource",
-								"httpRequestTimeout": "00:01:40",
-								"requestInterval": "00.00:00:00.010"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "ds_api_football",
-								"type": "DatasetReference",
-								"parameters": {
-									"relativeUrl": "players?team=529&season=2022"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ds_raw",
-								"type": "DatasetReference",
-								"parameters": {
-									"fileName": "players"
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2023-06-05T15:46:20Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_api_football')]",
 				"[concat(variables('factoryId'), '/datasets/ds_raw')]"
 			]
 		}
